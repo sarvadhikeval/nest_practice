@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthService } from './auth.service';
-import { JoiValidationPipe } from '../user/entities/joi-validation.pipe';
+import { JoiValidationPipe } from '../../core/pipe/joi-validation.pipe';
 import { UserEntityValidation } from '../user/entities/user.entity.validation';
 
 @Controller()

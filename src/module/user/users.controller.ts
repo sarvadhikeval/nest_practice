@@ -8,14 +8,19 @@ import {
   Put,
   UseGuards,
   Req,
+  Post,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthService } from 'src/module/auth/auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../../core/guard/roles.guard';
+import { Roles } from '../../core/guard/roles.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('user')
 export class UsersController {
@@ -45,5 +50,16 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
+  }
+
+  @Post('img')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({}),
+    }),
+  )
+  img(@Body() data: any, @UploadedFile() file: Express.Multer.File) {
+    console.log(file);
+    console.log(data);
   }
 }
